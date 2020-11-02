@@ -35,22 +35,17 @@ public class ConfigLoader {
 
         Element loggers = (Element) document.getElementsByTagName("loggers").item(0);
 
-        return iterateNodeList(loggers, "logger")
+        return Utils.iterateXmlNodeList(loggers, "logger")
                 .map(loggerDoc -> parseLoggerXmlElement((Element) loggerDoc))
                 .collect(Collectors.toList());
     }
 
     private Logger parseLoggerXmlElement(Element xmlElement) {
         String loggerName = Optional.ofNullable(xmlElement.getAttribute("name")).orElseThrow();
-        List<Appender> appenders = iterateNodeList(xmlElement, "appender")
+        List<Appender> appenders = Utils.iterateXmlNodeList(xmlElement, "appender")
                 .map(xmlConfig -> appenderFactory.createAppender(xmlConfig.getAttribute("name"), xmlConfig))
                 .collect(Collectors.toList());
 
         return new Logger(loggerName, appenders);
-    }
-
-    private Stream<Element> iterateNodeList(Element rootElement, String tagName) {
-        NodeList elements = rootElement.getElementsByTagName(tagName);
-        return IntStream.range(0, elements.getLength()).mapToObj(elements::item).map(obj -> (Element) obj);
     }
 }

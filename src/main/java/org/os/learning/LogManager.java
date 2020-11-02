@@ -15,12 +15,17 @@ public class LogManager {
     private Map<String, Logger> loggers = null;
     private final ConfigLoader configLoader;
     private AppenderFactory appenderFactory;
+    private String configurationLocation = "resources/logger.xml";
     private static final LogManager instance = new LogManager();
 
     private LogManager() {
         registerDefaultAppenders();
 
         configLoader = new ConfigLoader(appenderFactory);
+    }
+
+    public static void setConfigurationLocation(String path) {
+        instance.configurationLocation = path;
     }
 
     public static void registerAppender(String appenderName, Supplier<Appender> supplier) throws IOException, SAXException, ParserConfigurationException {
@@ -45,7 +50,7 @@ public class LogManager {
     }
 
     private void initializeLoggers() throws ParserConfigurationException, SAXException, IOException {
-        loggers = configLoader.readAndBuildConfiguration("hardCoded").stream()
+        loggers = configLoader.readAndBuildConfiguration(instance.configurationLocation).stream()
         .collect(Collectors.toMap(Logger::getName, logger -> logger));
 
     }

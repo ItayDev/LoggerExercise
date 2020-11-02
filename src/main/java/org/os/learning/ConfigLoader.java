@@ -26,14 +26,14 @@ import java.util.stream.Stream;
 public class ConfigLoader {
     private final AppenderFactory appenderFactory;
 
-    List<Logger> readAndBuildConfiguration(String path) throws IOException, ParserConfigurationException, SAXException {
+    public List<Logger> readAndBuildConfiguration(String path) throws IOException, ParserConfigurationException, SAXException {
         @Cleanup InputStream in = new FileInputStream(path);
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = builderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(in);
         document.getDocumentElement().normalize();
-
-        Element loggers = (Element) document.getElementsByTagName("loggers").item(0);
+        Element root = (Element) document.getElementsByTagName("root").item(0);
+        Element loggers = (Element) root.getElementsByTagName("loggers").item(0);
 
         return Utils.iterateXmlNodeList(loggers, "logger")
                 .map(loggerDoc -> parseLoggerXmlElement((Element) loggerDoc))
@@ -41,7 +41,7 @@ public class ConfigLoader {
     }
 
     private Logger parseLoggerXmlElement(Element xmlElement) {
-        String loggerName = Optional.ofNullable(xmlElement.getAttribute("name")).orElseThrow();
+        String loggerName = Optional.ofNullable(xmlElement.getAttribute("name")).orElseThrow(IllegalArgumentException::new);
         List<Appender> appenders = Utils.iterateXmlNodeList(xmlElement, "appender")
                 .map(xmlConfig -> appenderFactory.createAppender(xmlConfig.getAttribute("name"), xmlConfig))
                 .collect(Collectors.toList());

@@ -1,0 +1,13 @@
+<root>
+    <loggers>
+        <logger name="main">
+            <appenders>
+                <appender name="console">
+                    <mapping>
+                        <map level="ERROR" value="red" />
+                    </mapping>
+                </appender>
+            </appenders>
+        </logger>
+    </loggers>
+</root>

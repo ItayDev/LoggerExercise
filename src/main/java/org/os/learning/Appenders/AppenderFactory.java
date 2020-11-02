@@ -13,7 +13,7 @@ public class AppenderFactory {
     }
 
     public Appender createAppender(String appenderName, Element xmlConfiguration) {
-        Appender appender = Optional.ofNullable(appenderCreator.get(appenderName)).orElseThrow().get();
+        Appender appender = Optional.ofNullable(appenderCreator.get(appenderName)).orElseThrow(IllegalArgumentException::new).get();
         appender.loadSettings(xmlConfiguration);
 
         return appender;

@@ -43,10 +43,10 @@ public class LogManager {
 
     private void registerDefaultAppenders() {
         appenderFactory = new AppenderFactory();
-        appenderFactory.registerAppender("File", FileAppender::new);
-        appenderFactory.registerAppender("Console", ConsoleAppender::new);
-        appenderFactory.registerAppender("Http", HttpAppender::new);
-        appenderFactory.registerAppender("RollingFile", RollingFileAppender::new);
+        appenderFactory.registerAppender("file", FileAppender::new);
+        appenderFactory.registerAppender("console", ConsoleAppender::new);
+        appenderFactory.registerAppender("http", HttpAppender::new);
+        appenderFactory.registerAppender("rollingFile", RollingFileAppender::new);
     }
 
     private void initializeLoggers() throws ParserConfigurationException, SAXException, IOException {

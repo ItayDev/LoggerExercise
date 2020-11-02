@@ -5,12 +5,17 @@ import org.os.learning.Appenders.AppenderFactory;
 import org.os.learning.Appenders.ConsoleAppender;
 import org.os.learning.ConfigLoader;
 import org.os.learning.LogLevel;
+import org.os.learning.LogManager;
 import org.os.learning.Logger;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.fail;
 
-public class ConfigLoaderTest {
+public class ConfigurationIntegrationTest {
     @Test
     public void shouldParseCorrectly() {
         AppenderFactory factory = new AppenderFactory();
@@ -29,5 +34,14 @@ public class ConfigLoaderTest {
         } catch (Exception exception){
             fail();
         }
+    }
+
+    @Test
+    public void shouldGetTheCorrectLogger() throws ParserConfigurationException, SAXException, IOException {
+        LogManager.setConfigurationLocation("src/test/resources/exampleConf.xml");
+
+        Logger logger = LogManager.getLogger("main").orElseThrow(IllegalArgumentException::new);
+
+        Assert.assertEquals(logger.getName(), "main");
     }
 }

@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -40,7 +41,7 @@ public class ConfigLoader {
     }
 
     private Logger parseLoggerXmlElement(Element xmlElement) {
-        String loggerName = xmlElement.getAttribute("name");
+        String loggerName = Optional.ofNullable(xmlElement.getAttribute("name")).orElseThrow();
         List<Appender> appenders = iterateNodeList(xmlElement, "appender")
                 .map(xmlConfig -> appenderFactory.createAppender(xmlConfig.getAttribute("name"), xmlConfig))
                 .collect(Collectors.toList());

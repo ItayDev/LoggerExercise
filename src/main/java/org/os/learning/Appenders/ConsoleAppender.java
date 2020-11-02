@@ -4,16 +4,13 @@ import org.os.learning.LogLevel;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ConsoleAppender implements Appender {
-    private Map<LogLevel, String> colorMap = initializeDefaultColors();
+    private final Map<LogLevel, String> colorMap = initializeDefaultColors();
 
     @Override
     public void writeLog(String message, LogLevel level) {
@@ -26,7 +23,7 @@ public class ConsoleAppender implements Appender {
         NodeList maps = mappings.getElementsByTagName("map");
         IntStream.range(0, maps.getLength()).mapToObj(maps::item).map(node -> (Element) node).forEach(map -> {
             LogLevel level = LogLevel.valueOf(map.getAttribute("level"));
-            String color = map.getAttribute("value");
+            String color = Optional.ofNullable(map.getAttribute("value")).orElseThrow();
 
             colorMap.put(level, color);
         });

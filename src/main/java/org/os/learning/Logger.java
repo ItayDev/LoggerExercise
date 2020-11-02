@@ -3,6 +3,8 @@ package org.os.learning;
 import lombok.Value;
 import org.os.learning.Appenders.Appender;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Value
@@ -27,7 +29,10 @@ public class Logger {
     }
 
     private void writeLog(LogLevel level, String message) {
-        // Will implemnent formatting later
-        appenders.forEach(appenders -> appenders.writeLog(message, level));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String logMessage = String.format("[%s] %s: %s", formatter.format(now), level.name(), message);
+
+        appenders.forEach(appenders -> appenders.writeLog(logMessage, level));
     }
 }

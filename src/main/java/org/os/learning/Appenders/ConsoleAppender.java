@@ -21,7 +21,8 @@ public class ConsoleAppender implements Appender {
         Element mappings = (Element) xmlSettings.getElementsByTagName("mapping").item(0);
         Utils.iterateXmlNodeList(mappings, "map").forEach(map -> {
             LogLevel level = LogLevel.valueOf(map.getAttribute("level"));
-            String color = Optional.ofNullable(map.getAttribute("value")).orElseThrow(IllegalArgumentException::new);
+            String color = Optional.ofNullable(map.getAttribute("value")).orElseThrow(() ->
+                    new IllegalArgumentException("value attribute wasn't present on map element"));
 
             colorMap.put(level, color);
         });

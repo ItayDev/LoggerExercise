@@ -13,7 +13,9 @@ public class AppenderFactory {
     }
 
     public Appender createAppender(String appenderName, Element xmlConfiguration) {
-        Appender appender = Optional.ofNullable(appenderCreator.get(appenderName)).orElseThrow(IllegalArgumentException::new).get();
+        Appender appender = Optional.ofNullable(appenderCreator.get(appenderName)).orElseThrow(() ->
+                new IllegalArgumentException(String.format("There is no registered appender named %s", appenderName)))
+                .get();
         appender.loadSettings(xmlConfiguration);
 
         return appender;

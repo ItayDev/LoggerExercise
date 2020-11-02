@@ -41,7 +41,8 @@ public class ConfigLoader {
     }
 
     private Logger parseLoggerXmlElement(Element xmlElement) {
-        String loggerName = Optional.ofNullable(xmlElement.getAttribute("name")).orElseThrow(IllegalArgumentException::new);
+        String loggerName = Optional.ofNullable(xmlElement.getAttribute("name")).orElseThrow(() ->
+                new IllegalArgumentException("No name attribute was specified for the logger element"));
         List<Appender> appenders = Utils.iterateXmlNodeList(xmlElement, "appender")
                 .map(xmlConfig -> appenderFactory.createAppender(xmlConfig.getAttribute("name"), xmlConfig))
                 .collect(Collectors.toList());

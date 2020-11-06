@@ -2,7 +2,7 @@ package org.os.learning;
 
 public enum LogLevel {
     DEBUG,
-    LEVEL,
+    INFO,
     WARNING,
     ERROR,
     FATAL

@@ -16,7 +16,7 @@ public class Logger {
         writeLog(LogLevel.DEBUG, message);
     }
     public void info(String message) {
-        writeLog(LogLevel.LEVEL, message);
+        writeLog(LogLevel.INFO, message);
     }
     public void warning(String message) {
         writeLog(LogLevel.WARNING, message);

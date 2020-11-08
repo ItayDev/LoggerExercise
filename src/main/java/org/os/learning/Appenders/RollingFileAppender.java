@@ -66,7 +66,7 @@ public class RollingFileAppender implements Appender {
 
     private String validateLogFileSize(String logName) {
         String finalLogName = logName;
-        int retryTimes = 0;
+        int retryTimes = 1;
 
         long fileSize = (new File(finalLogName)).getTotalSpace();
 

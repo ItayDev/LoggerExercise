@@ -4,11 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 import org.os.learning.Appenders.AppenderFactory;
 import org.os.learning.Appenders.Appender;
-import org.os.learning.Logger;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
 import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,8 +16,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @AllArgsConstructor
 public class ConfigLoader {
@@ -36,7 +31,7 @@ public class ConfigLoader {
         Element loggers = (Element) root.getElementsByTagName("loggers").item(0);
 
         return Utils.iterateXmlNodeList(loggers, "logger")
-                .map(loggerDoc -> parseLoggerXmlElement((Element) loggerDoc))
+                .map(this::parseLoggerXmlElement)
                 .collect(Collectors.toList());
     }
 
